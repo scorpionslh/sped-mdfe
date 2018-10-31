@@ -1770,8 +1770,8 @@ class Make extends BaseMake
      */
     protected function zTagIde()
     {
-        $this->dom->addArrayChild($this->ide, $this->aInfMunCarrega);
-        $this->dom->addArrayChild($this->ide, $this->aInfPercurso);
+        $this->dom->addArrayChildBefore($this->ide, $this->aInfMunCarrega, 'dhIniViagem');
+        $this->dom->addArrayChildBefore($this->ide, $this->aInfPercurso, 'dhIniViagem');
     }
 
     /**

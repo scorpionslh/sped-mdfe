@@ -164,7 +164,7 @@ class Dom extends DOMDocument
             $parent->appendChild($child);
         }
     }
-    
+
     /**
      * appChildBefore
      * Acrescenta DOMElement a pai DOMElement
@@ -185,9 +185,11 @@ class Dom extends DOMDocument
         $bnode = $parent->getElementsByTagName($before)->item(0);
         if (!empty($child) && !empty($bnode)) {
             $parent->insertBefore($child, $bnode);
+        } else {
+            $this->appChild($parent, $child);
         }
     }
-    
+
     /**
      * addArrayChild
      * Adiciona a um DOMNode parent, outros elementos passados em um array de DOMElements
@@ -201,6 +203,25 @@ class Dom extends DOMDocument
         if (! empty($arr) && ! empty($parent)) {
             foreach ($arr as $node) {
                 $this->appChild($parent, $node, '');
+                $num++;
+            }
+        }
+        return $num;
+    }
+
+    /**
+     * addArrayChildBefore
+     * Adiciona a um DOMNode parent, outros elementos passados em um array de DOMElements
+     * @param DOMElement $parent
+     * @param array $arr
+     * @return int
+     */
+    public function addArrayChildBefore(&$parent, $arr, $before)
+    {
+        $num = 0;
+        if (! empty($arr) && ! empty($parent)) {
+            foreach ($arr as $node) {
+                $this->appChildBefore($parent, $node, $before, '');
                 $num++;
             }
         }
