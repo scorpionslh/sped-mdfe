@@ -178,14 +178,24 @@ class Make extends BaseMake
         foreach ($this->aAutXML as $aut) {
             $this->dom->appChild($this->infMDFe, $aut, 'Falta tag "infMDFe"');
         }
+
         //[1] tag infMDFe (1 A01)
         $this->dom->appChild($this->MDFe, $this->infMDFe, 'Falta tag "MDFe"');
+
+        
+        $infMDFeSupl  = $this->dom->createElement('infMDFeSupl');
+        $this->dom->addChild($infMDFeSupl, 'qrCodMDFe', "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode?chMDFe={$this->chMDFe}&tpAmb=1", true, 'QRCode Obrigatorio');
+
+        $this->dom->appChild($this->MDFe, $infMDFeSupl, 'Falta tag "QRCODE"');
+
+
         //[0] tag MDFe
         $this->dom->appChild($this->dom, $this->MDFe, 'Falta DOMDocument');
         // testa da chave
         $this->zTestaChaveXML($this->dom);
         //convert DOMDocument para string
         $this->xml = $this->dom->saveXML();
+        
         return true;
     }
 
@@ -1931,6 +1941,9 @@ class Make extends BaseMake
             $ide->getElementsByTagName('cDV')->item(0)->nodeValue = substr($chaveMontada, -1);
             $infMDFe = $dom->getElementsByTagName("infMDFe")->item(0);
             $infMDFe->setAttribute("Id", "MDFe" . $chaveMontada);
+            $chaveStr = "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode?chMDFe=".$chaveMontada."&tpAmb=1";
+            $chaveStr = htmlspecialchars($chaveStr, ENT_QUOTES);
+            $dom->getElementsByTagName("qrCodMDFe")->item(0)->nodeValue = $chaveStr;
             $this->chMDFe = $chaveMontada;
         }
     }
